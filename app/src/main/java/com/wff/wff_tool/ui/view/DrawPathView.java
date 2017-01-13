@@ -44,6 +44,17 @@ public class DrawPathView extends View {
     };
 
     @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Path path = new Path();
@@ -51,16 +62,19 @@ public class DrawPathView extends View {
         canvas.save();
         canvas.translate(getWidth() / 2, getHeight() / 2);
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        ////坐标轴
         mPaint.setColor(Color.GREEN);
         canvas.drawLine(-getWidth() / 2, 0, getWidth() / 2, 0, mPaint);
         canvas.drawLine(0, -getHeight() / 2, 0, getHeight() / 2, mPaint);
         mPaint.setColor(Color.RED);
+        ////路径
         canvas.rotate(mIndicatorAngle);
         path.moveTo(-10, 30);
         path.lineTo(10, 30);
         path.lineTo(0, getHeight() > getWidth() ? -getWidth() / 2 + 10 : -getHeight() / 2 + 10);
         path.close();
         canvas.drawPath(path, mPaint);
+        ////圆
         mPaint.setColor(Color.BLACK);
         canvas.drawCircle(0, 0, 15, mPaint);
         canvas.restore();
