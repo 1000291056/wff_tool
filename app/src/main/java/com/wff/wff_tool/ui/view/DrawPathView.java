@@ -5,10 +5,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.Serializable;
 
@@ -17,17 +22,26 @@ import java.io.Serializable;
  */
 
 public class DrawPathView extends View {
+    private static final String TAG = DrawPathView.class.getSimpleName();
     /**
      * 指针摆动角度
      */
-    private static final int SWINGANGLESCALE = 5;
+    private static final int SWINGANGLESCALE = 2;
+    /**
+     * 刻度长度
+     */
+    private static final int SCALELENGTH = 25;
     private static final int POSTINVALIDATE = 0;
     private static final int STARTSWING = 1;
     private Context mContext;
     private Paint mPaint;
     private boolean isFirst = true;
-    private int mIndicatorAngle = 0;
-    private int mfinalIndicatorAngle = 0;
+    private double mIndicatorAngle = 0;
+    private double mfinalIndicatorAngle = 0;
+    /**
+     * 以x轴为基准指针的角度
+     */
+    private int realAngle = 90;
     private int scale = SWINGANGLESCALE;
     private Handler mHandler = new Handler() {
         @Override
@@ -54,34 +68,65 @@ public class DrawPathView extends View {
         setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Path path = new Path();
 
-        canvas.save();
+
         canvas.translate(getWidth() / 2, getHeight() / 2);
+        mPaint.setStyle(Paint.Style.STROKE);
+
+        ////画半圆
+        mPaint.setColor(Color.GREEN);
+        canvas.save();
+        canvas.drawArc(-getWidth() / 2, -getWidth() / 2, getWidth() / 2, getWidth() / 2, 0, -180, false, mPaint);
+        canvas.restore();
+        ////end
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         ////坐标轴
+        canvas.save();
         mPaint.setColor(Color.GREEN);
         canvas.drawLine(-getWidth() / 2, 0, getWidth() / 2, 0, mPaint);
-        canvas.drawLine(0, -getHeight() / 2, 0, getHeight() / 2, mPaint);
-        mPaint.setColor(Color.RED);
+
+        canvas.restore();
+        ////刻度
+        int temp = 90;
+        mPaint.setColor(Color.BLACK);
+        mPaint.setStrokeWidth(5);
+        canvas.save();
+        int length = (getWidth() / 2 > getHeight() / 2 ? getHeight() / 2 : getWidth() / 2);
+        canvas.rotate(90);
+        while (temp >= -90) {
+            canvas.drawLine(0, length - SCALELENGTH, 0, length, mPaint);
+            canvas.rotate(10);
+            temp -= 10;
+        }
+        canvas.restore();
         ////路径
-        canvas.rotate(mIndicatorAngle);
+        mPaint.setColor(Color.RED);
+        canvas.save();
+        canvas.rotate((float) mIndicatorAngle);
         path.moveTo(-10, 30);
         path.lineTo(10, 30);
         path.lineTo(0, getHeight() > getWidth() ? -getWidth() / 2 + 10 : -getHeight() / 2 + 10);
         path.close();
         canvas.drawPath(path, mPaint);
+        canvas.restore();
         ////圆
         mPaint.setColor(Color.BLACK);
+        canvas.save();
         canvas.drawCircle(0, 0, 15, mPaint);
         canvas.restore();
-        if (isFirst) {
-            swing(mIndicatorAngle);
-            isFirst = false;
-        }
+        ////打印角度
+        Paint paintText = new Paint();
+        paintText.setStrokeWidth(0);
+        paintText.setStyle(Paint.Style.STROKE);
+        paintText.setTextSize(25);
+        canvas.save();
+        canvas.drawText("相对于x轴角度:" + realAngle, 0, -(getWidth() / 2 + 20), paintText);
+        canvas.restore();
 
 
     }
@@ -91,9 +136,9 @@ public class DrawPathView extends View {
      *
      * @param angle 最终角度
      */
-    private void swing(int angle) {
+    private void swing(double angle) {
 
-        int indicatorAngle;
+        double indicatorAngle;
         int scale = SWINGANGLESCALE;
         int timeS = 1;
         while (scale > 0) {
@@ -116,6 +161,14 @@ public class DrawPathView extends View {
         messageTEMP2.what = POSTINVALIDATE;
         messageTEMP2.obj = new Swing(mfinalIndicatorAngle);
         mHandler.sendMessageDelayed(messageTEMP2, timeS * 100);
+    }
+
+    /**
+     * 计算相对于x轴 指针角度
+     */
+    private void calculateRealAngle() {
+        realAngle = (int) (mfinalIndicatorAngle + 90);
+        Log.i(TAG, "--------------------------realAngle=" + realAngle);
     }
 
     public DrawPathView(Context context) {
@@ -147,18 +200,51 @@ public class DrawPathView extends View {
         }
     }
 
-    class Swing implements Serializable {
-        private int angel;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getY() > getHeight() / 2) {
+            return true;
+        }
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_MOVE:
+                caculateAngle(event.getX(), event.getY());
+                break;
+            case MotionEvent.ACTION_UP:
+                swing(mfinalIndicatorAngle);
+                break;
+        }
+        calculateRealAngle();
+        return true;
+    }
 
-        public Swing(int angel) {
+    private void caculateAngle(float x, float y) {
+        mfinalIndicatorAngle = mIndicatorAngle = -Math.atan(1.0 * (x - getWidth() / 2) / (y - getHeight() / 2)) * 180 / Math.PI;
+        Log.i(TAG, "--------------------------mIndicatorAngle=" + mIndicatorAngle);
+        invalidate();
+    }
+
+    public int getRealAngle() {
+        return realAngle;
+    }
+
+    public void setRealAngle(int realAngle) {
+        this.realAngle = realAngle;
+        mfinalIndicatorAngle = mIndicatorAngle = 90 - realAngle;
+    }
+
+    class Swing implements Serializable {
+        private double angel;
+
+        public Swing(double angel) {
             this.angel = angel;
         }
 
-        public int getAngel() {
+        public double getAngel() {
             return angel;
         }
 
-        public void setAngel(int angel) {
+        public void setAngel(double angel) {
             this.angel = angel;
         }
     }
