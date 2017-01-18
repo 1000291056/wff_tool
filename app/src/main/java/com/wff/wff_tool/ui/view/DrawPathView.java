@@ -36,12 +36,15 @@ public class DrawPathView extends View {
     private Context mContext;
     private Paint mPaint;
     private boolean isFirst = true;
-    private double mIndicatorAngle = 0;
-    private double mfinalIndicatorAngle = 0;
+    /**
+     * 旋转的角度
+     */
+    private double mIndicatorAngle = -90;
+    private double mfinalIndicatorAngle = -90;
     /**
      * 以x轴为基准指针的角度
      */
-    private int realAngle = 90;
+    private double realAngle = 90;
     private int scale = SWINGANGLESCALE;
     private Handler mHandler = new Handler() {
         @Override
@@ -81,7 +84,8 @@ public class DrawPathView extends View {
         ////画半圆
         mPaint.setColor(Color.GREEN);
         canvas.save();
-        canvas.drawArc(-getWidth() / 2, -getWidth() / 2, getWidth() / 2, getWidth() / 2, 0, -180, false, mPaint);
+        int r = getWidth() < getHeight() ? getWidth() / 2 : getHeight() / 2;
+        canvas.drawArc(-r, -r, r, r, 0, -180, false, mPaint);
         canvas.restore();
         ////end
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -98,23 +102,44 @@ public class DrawPathView extends View {
         canvas.save();
         int length = (getWidth() / 2 > getHeight() / 2 ? getHeight() / 2 : getWidth() / 2);
         canvas.rotate(90);
+
         while (temp >= -90) {
             canvas.drawLine(0, length - SCALELENGTH, 0, length, mPaint);
             canvas.rotate(10);
             temp -= 10;
         }
         canvas.restore();
-        ////路径
+        ////写刻度
+        canvas.save();
+        Paint paintScaleText = new Paint();
+        paintScaleText.setStrokeWidth(0);
+        paintScaleText.setStyle(Paint.Style.STROKE);
+        paintScaleText.setColor(Color.RED);
+        paintScaleText.setTextSize(25);
+        temp = 90;
+        int tempAngle = 180;
+        canvas.rotate(90);
+        while (temp >= -90) {
+            String text = String.valueOf(tempAngle);
+            canvas.drawText(text, -paintScaleText.measureText(text) / 2, -(length - SCALELENGTH - 20), paintScaleText);
+            canvas.rotate(-10);
+            temp -= 10;
+            tempAngle -= 10;
+        }
+
+        canvas.restore();
+        ////
+        ////路径 指针
         mPaint.setColor(Color.RED);
         canvas.save();
         canvas.rotate((float) mIndicatorAngle);
-        path.moveTo(-10, 30);
-        path.lineTo(10, 30);
+        path.moveTo(-5, 30);
+        path.lineTo(5, 30);
         path.lineTo(0, getHeight() > getWidth() ? -getWidth() / 2 + 10 : -getHeight() / 2 + 10);
         path.close();
         canvas.drawPath(path, mPaint);
         canvas.restore();
-        ////圆
+        ////圆点
         mPaint.setColor(Color.BLACK);
         canvas.save();
         canvas.drawCircle(0, 0, 15, mPaint);
@@ -125,7 +150,7 @@ public class DrawPathView extends View {
         paintText.setStyle(Paint.Style.STROKE);
         paintText.setTextSize(25);
         canvas.save();
-        canvas.drawText("相对于x轴角度:" + realAngle, 0, -(getWidth() / 2 + 20), paintText);
+        canvas.drawText("相对于x轴角度:" + realAngle, 0, -(getWidth() / 2 + 50), paintText);
         canvas.restore();
 
 
@@ -167,7 +192,7 @@ public class DrawPathView extends View {
      * 计算相对于x轴 指针角度
      */
     private void calculateRealAngle() {
-        realAngle = (int) (mfinalIndicatorAngle + 90);
+        realAngle = (mfinalIndicatorAngle + 90);
         Log.i(TAG, "--------------------------realAngle=" + realAngle);
     }
 
@@ -202,9 +227,7 @@ public class DrawPathView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event.getY() > getHeight() / 2) {
-            return true;
-        }
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
@@ -218,17 +241,31 @@ public class DrawPathView extends View {
         return true;
     }
 
+    /**
+     * 计算旋转角度
+     *
+     * @param x
+     * @param y
+     */
     private void caculateAngle(float x, float y) {
-        mfinalIndicatorAngle = mIndicatorAngle = -Math.atan(1.0 * (x - getWidth() / 2) / (y - getHeight() / 2)) * 180 / Math.PI;
+        if (y >= getHeight() / 2) {
+            if (x >= getWidth() / 2) {
+                mfinalIndicatorAngle = mIndicatorAngle = 90;
+            } else {
+                mfinalIndicatorAngle = mIndicatorAngle = -90;
+            }
+        } else {
+            mfinalIndicatorAngle = mIndicatorAngle = -Math.atan(1.0 * (x - getWidth() / 2) / (y - getHeight() / 2)) * 180 / Math.PI;
+        }
         Log.i(TAG, "--------------------------mIndicatorAngle=" + mIndicatorAngle);
         invalidate();
     }
 
-    public int getRealAngle() {
+    public double getRealAngle() {
         return realAngle;
     }
 
-    public void setRealAngle(int realAngle) {
+    public void setRealAngle(double realAngle) {
         this.realAngle = realAngle;
         mfinalIndicatorAngle = mIndicatorAngle = 90 - realAngle;
     }
