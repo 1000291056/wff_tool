@@ -12,13 +12,18 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
+import android.util.LruCache;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wff.wff_tool.asyctask.MtAsycTask;
 import com.wff.wff_tool.bean.MessageBean;
 import com.wff.wff_tool.socket.SocketService;
 
@@ -49,6 +54,10 @@ public class MainActivity extends BaseActivity {
     Button mSendMsgBtn;
     @BindView(R.id.receiveMsgTv)
     TextView mReceiveMsgTv;
+    @BindView(R.id.testScrollerBtn)
+    Button mTestScrollerBtn;
+    @BindView(R.id.activity_main)
+    LinearLayout mActivityMain;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -96,11 +105,34 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        pixelProcessing();
+//        pixelProcessing();
         Log.i(TAG, "bind service" + bindService(new Intent(MainActivity.this, SocketService.class), mServiceConnection, Context.BIND_AUTO_CREATE));
-        for (int i = 0; i < 10; i++) {
-            mHandler.sendEmptyMessageDelayed(0, (i + 1) * 1000);
-        }
+//        for (int i = 0; i < 10; i++) {
+//            mHandler.sendEmptyMessageDelayed(0, (i + 1) * 1000);
+//        }
+    }
+
+    private void testApi() {
+        LruCache<String, Bitmap> lruCache = new LruCache<>(10);
+    }
+
+    private void testAsync() {
+        MtAsycTask asycTask = new MtAsycTask();
+        asycTask.execute();
+    }
+
+    private void testClass() {
+//    ClassLoader
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -153,6 +185,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onNext(Integer integer) {
 
+
             }
         };
         observable.lift(new Observable.Operator<Integer, String>() {
@@ -188,7 +221,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.drawpathBtn, R.id.openglBtn, R.id.sendMsg})
+    @OnClick({R.id.drawpathBtn, R.id.openglBtn, R.id.sendMsg, R.id.testScrollerBtn})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.drawpathBtn:
@@ -196,6 +229,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.openglBtn:
                 startActivity(new Intent(mContext, MyOpenGLActivity.class));
+                break;
+            case R.id.testScrollerBtn:
+                startActivity(new Intent(mContext, TestScrollerActivity.class));
                 break;
             case R.id.sendMsg:
                 if (mInterface != null) {

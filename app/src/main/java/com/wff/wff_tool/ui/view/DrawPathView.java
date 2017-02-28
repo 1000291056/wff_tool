@@ -267,6 +267,7 @@ public class DrawPathView extends View {
 
     public void setRealAngle(double realAngle) {
         this.realAngle = realAngle;
+
         mfinalIndicatorAngle = mIndicatorAngle = 90 - realAngle;
     }
 

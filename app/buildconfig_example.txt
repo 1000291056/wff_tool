@@ -1,0 +1,144 @@
+apply plugin: 'com.android.application'
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+Properties props = new Properties()
+props.load(new FileInputStream(file("signing.properties")))
+android {
+    compileSdkVersion 22
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.cmcc.iseeproject"
+        minSdkVersion 16
+        targetSdkVersion 19
+        versionCode 14
+        versionName "1.0.14"
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    signingConfigs {
+        release {
+            storeFile file(props['KEYSTORE_FILE'])      //签名文件
+            keyAlias props['KEY_ALIAS']
+            storePassword props['KEYSTORE_PASSWORD']
+            keyPassword props['KEY_PASSWORD']  //签名密码
+        }
+        debug {
+            storeFile file(props['KEYSTORE_FILE'])      //签名文件
+            keyAlias props['KEY_ALIAS']
+            storePassword props['KEYSTORE_PASSWORD']
+            keyPassword props['KEY_PASSWORD']  //签名密码
+        }
+    }
+
+    buildTypes {
+        //shrinkResources is taken into account only if minifyEnabled is true
+        //minifyEnabled shrinks code, while shrinkResources shrinks resources that are not referenced from the code
+        release {
+            debuggable true
+            minifyEnabled true //启用Proguard
+            shrinkResources true //是否清理无用资源,依赖于minifyEnabled
+            zipAlignEnabled true //是否启用zipAlign压缩
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false //是否清理无用资源,依赖于minifyEnabled
+            zipAlignEnabled false //是否启用zipAlign压缩
+            signingConfig signingConfigs.debug
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    productFlavors{
+        beijing{
+            buildConfigField("boolean", "IS_LOCAL", "false")
+            buildConfigField("String", "SERVER_NAME", "\"BJ\"")
+            buildConfigField("String", "SERVER_HOST", "\"http://218.206.176.238:8080\"")
+            buildConfigField("String", "LOGIN_API", "\"login\"")
+        }
+        local{
+            buildConfigField("boolean", "IS_LOCAL", "true")
+            buildConfigField("String", "SERVER_NAME", "\"LOCAL\"")
+            buildConfigField("String", "SERVER_HOST", "\"https://192.168.1.133:8443\"")
+            buildConfigField("String", "LOGIN_API", "\"login\"")
+        }
+        shandong{
+            buildConfigField("boolean", "IS_LOCAL", "false")
+            buildConfigField("String", "SERVER_NAME", "\"SD\"")
+            buildConfigField("String", "SERVER_HOST", "\"http://223.99.141.138:8080\"")
+            buildConfigField("String", "LOGIN_API", "\"loginsd\"")
+        }
+        aliyun{
+            buildConfigField("boolean", "IS_LOCAL", "false")
+            buildConfigField("String", "SERVER_NAME", "\"A\"")
+            buildConfigField("String", "SERVER_HOST", "\"http://139.129.233.168:9007\"")
+            buildConfigField("String", "LOGIN_API", "\"login\"")
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (variant.buildType.name.equals('release')) {
+                def fileName = "Isee_phone_v${defaultConfig.versionName}_${releaseTime()}_release.apk"
+                if(variant.flavorName.equals("beijing")){
+                    fileName = "Isee_phone_v${defaultConfig.versionName}_${releaseTime()}_beijing_release.apk"
+                }else if(variant.flavorName.equals("shandong")){
+                    fileName = "Isee_phone_v${defaultConfig.versionName}_${releaseTime()}_shandong_release.apk"
+                }else if(variant.flavorName.equals("local")){
+                    fileName = "Isee_phone_v${defaultConfig.versionName}_${releaseTime()}_local_release.apk"
+                }else if(variant.flavorName.equals("aliyun")){
+                    fileName = "Isee_phone_v${defaultConfig.versionName}_${releaseTime()}_aliyun_release.apk"
+                }
+                output.outputFile = new File(outputFile.parent, fileName)
+            }else if(variant.buildType.name.equals('debug')){
+                def fileName = "Isee_phone_v${defaultConfig.versionName}_${releaseTime()}_debug.apk"
+                if(variant.flavorName.equals("beijing")){
+                    fileName = "Isee_phone_v${defaultConfig.versionName}_${releaseTime()}_beijing_debug.apk"
+                }else if(variant.flavorName.equals("shandong")){
+                    fileName = "Isee_phone_v${defaultConfig.versionName}_${releaseTime()}_shandong_debug.apk"
+                }else if(variant.flavorName.equals("local")){
+                    fileName = "Isee_phone_v${defaultConfig.versionName}_${releaseTime()}_local_debug.apk"
+                }else if(variant.flavorName.equals("aliyun")){
+                    fileName = "Isee_phone_v${defaultConfig.versionName}_${releaseTime()}_aliyun_debug.apk"
+                }
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.google.code.gson:gson:2.2.1'
+    compile 'net.robinx:lib.blur:1.0.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    compile fileTree(dir: 'libs', exclude:["*mtclib*.jar","*peerconnection*.jar","okhttp*.jar","okio*.jar"], include: "*.jar")
+
+    beijingCompile files("libs/mtclib_0908_bj.jar")
+    beijingCompile files("libs/libjingle_peerconnection_bj.jar")
+    beijingCompile files("libs/okhttp-2.3.0.jar")
+    beijingCompile files("libs/okio-1.3.0.jar")
+
+    localCompile files("libs/mtclib_0908_bj.jar")
+    localCompile files("libs/libjingle_peerconnection_bj.jar")
+    localCompile files("libs/okhttp-2.3.0.jar")
+    localCompile files("libs/okio-1.3.0.jar")
+
+    shandongCompile files("libs/mtclib_170110_sd.jar")
+//    shandongCompile files("libs/libjingle_peerconnection_sd.jar")
+//    shandongCompile files("libs/okhttp-2.3.0.jar")
+//    shandongCompile files("libs/okio-1.3.0.jar")
+
+    //阿里云平台 mtclib 包含了 之前的mtclib + libjingle + okhttp +okio
+    aliyunCompile files("libs/mtclib_1226_aliyun.jar")
+}
