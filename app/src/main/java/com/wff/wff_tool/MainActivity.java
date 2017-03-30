@@ -110,6 +110,7 @@ public class MainActivity extends BaseActivity {
 //        for (int i = 0; i < 10; i++) {
 //            mHandler.sendEmptyMessageDelayed(0, (i + 1) * 1000);
 //        }
+//        MqttC
     }
 
     private void testApi() {
@@ -221,7 +222,11 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.drawpathBtn, R.id.openglBtn, R.id.sendMsg, R.id.testScrollerBtn})
+    @OnClick({R.id.drawpathBtn, R.id.openglBtn
+            , R.id.sendMsg, R.id.testScrollerBtn
+            ,R.id.testProAnimator,R.id.testPullView
+            ,R.id.openglBtnView,R.id.testTransition
+    ,R.id.testrefresh_recycle})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.drawpathBtn:
@@ -232,6 +237,21 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.testScrollerBtn:
                 startActivity(new Intent(mContext, TestScrollerActivity.class));
+                break;
+            case R.id.testProAnimator:
+                startActivity(new Intent(mContext, TestAnimatorActivity.class));
+                break;
+            case R.id.testPullView:
+                startActivity(new Intent(mContext, PullRefreshActivity.class));
+                break;
+            case R.id.openglBtnView:
+                startActivity(new Intent(mContext, OpenGLActivity.class));
+                break;
+            case R.id.testTransition:
+                startActivity(new Intent(mContext, TestTransitionActivity.class));
+                break;
+            case R.id.testrefresh_recycle:
+                startActivity(new Intent(mContext, TestRefreshActivity.class));
                 break;
             case R.id.sendMsg:
                 if (mInterface != null) {

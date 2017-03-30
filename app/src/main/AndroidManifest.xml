@@ -10,6 +10,7 @@
     <supports-gl-texture android:name="GL_OES_compressed_paletted_texture"/>
 
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -24,11 +25,22 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".DrawPathActivity"></activity>
-        <activity android:name=".MyOpenGLActivity"></activity>
-        <activity android:name=".TestScrollerActivity"></activity>
+        <activity android:name=".DrawPathActivity"/>
+        <activity android:name=".MyOpenGLActivity"/>
+        <activity android:name=".TestScrollerActivity"/>
 
-        <service android:name=".socket.SocketService"></service>
+        <service android:name=".socket.SocketService"/>
+
+        <activity android:name=".TestAnimatorActivity">
+        </activity>
+        <activity android:name=".PullRefreshActivity">
+        </activity>
+        <activity android:name=".OpenGLActivity">
+        </activity>
+        <activity android:name=".TestTransitionActivity">
+        </activity>
+        <activity android:name=".TestRefreshActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -21,6 +22,11 @@ public class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         initWebView();
         setContentView(mWebView);
+    }
+
+    @JavascriptInterface
+    public void aa() {
+
     }
 
     private void initWebView() {

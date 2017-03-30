@@ -32,15 +32,47 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="openglBtn"/>
+
             <Button
                 android:id="@+id/testScrollerBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="testScrollerBtn"/>
+
+            <Button
+                android:id="@+id/testProAnimator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="属性动画"/>
+
+            <Button
+                android:id="@+id/testPullView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="下拉上拉"/>
+
+            <Button
+                android:id="@+id/openglBtnView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="opengl"/>
+
+            <Button
+                android:id="@+id/testTransition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试Transition"/>
+
+            <Button
+                android:id="@+id/testrefresh_recycle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试刷新refreshview"/>
+
             <TextView
+                android:id="@+id/receiveMsgTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/receiveMsgTv"
                 />
 
             <LinearLayout
@@ -61,6 +93,7 @@
                     android:layout_height="wrap_content"
                     android:text="发送"/>
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/pixel_processing_image"
                 android:layout_width="wrap_content"
