@@ -35,7 +35,7 @@
         </activity>
         <activity android:name=".PullRefreshActivity">
         </activity>
-        <activity android:name=".OpenGLActivity">
+        <activity android:name=".utils.OpenGLActivity">
         </activity>
         <activity android:name=".TestTransitionActivity">
         </activity>

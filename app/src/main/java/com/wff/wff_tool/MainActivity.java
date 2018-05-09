@@ -25,7 +25,10 @@ import android.widget.Toast;
 
 import com.wff.wff_tool.asyctask.MtAsycTask;
 import com.wff.wff_tool.bean.MessageBean;
+import com.wff.wff_tool.nativecode.NativeObject;
+import com.wff.wff_tool.nativecode.NativeTest;
 import com.wff.wff_tool.socket.SocketService;
+import com.wff.wff_tool.utils.OpenGLActivity;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -105,12 +108,45 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        Log.i(TAG, "onCreate____________________");
+//        new NativeTest();
 //        pixelProcessing();
         Log.i(TAG, "bind service" + bindService(new Intent(MainActivity.this, SocketService.class), mServiceConnection, Context.BIND_AUTO_CREATE));
 //        for (int i = 0; i < 10; i++) {
 //            mHandler.sendEmptyMessageDelayed(0, (i + 1) * 1000);
 //        }
 //        MqttC
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart  _____________" +
+                "" +
+                "" +
+                "");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i(TAG, "onRestart _______________");
+    }
+
+    @Override
+    public void onStateNotSaved() {
+        super.onStateNotSaved();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i(TAG, "onStop____________________");
     }
 
     private void testApi() {
