@@ -1,16 +1,20 @@
 package com.wff.wff_tool;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.UriMatcher;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+import android.os.StrictMode;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.Menu;
@@ -25,9 +29,9 @@ import android.widget.Toast;
 
 import com.wff.wff_tool.asyctask.MtAsycTask;
 import com.wff.wff_tool.bean.MessageBean;
-import com.wff.wff_tool.nativecode.NativeObject;
-import com.wff.wff_tool.nativecode.NativeTest;
-import com.wff.wff_tool.socket.SocketService;
+import com.wff.wff_tool.okio.OkIO;
+import com.wff.wff_tool.receiver.OrientationBroadcastReceiver;
+import com.wff.wff_tool.rxjava.RxJava;
 import com.wff.wff_tool.utils.OpenGLActivity;
 
 import java.net.URL;
@@ -37,8 +41,6 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * @author wufeifei
@@ -61,6 +63,11 @@ public class MainActivity extends BaseActivity {
     Button mTestScrollerBtn;
     @BindView(R.id.activity_main)
     LinearLayout mActivityMain;
+    @BindView(R.id.imageload)
+    Button imageload;
+    private OrientationBroadcastReceiver orientationBR = new OrientationBroadcastReceiver();
+    private IntentFilter orientationIF = new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED);
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -103,15 +110,26 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         ButterKnife.bind(this);
+        //NetWork.searchBook();
+        new OkIO().testOkio();
+        PackageManager packageManager = getPackageManager();
+        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        matcher.addURI(mContext.getPackageName(), "person", 1);
+        int ma = matcher.match(Uri.parse("content://" + mContext.getPackageName() + "/person"));
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectActivityLeaks().build());
+        new RxJava(this).rxjava();
         Log.i(TAG, "onCreate____________________");
 //        new NativeTest();
 //        pixelProcessing();
-        Log.i(TAG, "bind service" + bindService(new Intent(MainActivity.this, SocketService.class), mServiceConnection, Context.BIND_AUTO_CREATE));
+        // Log.i(TAG, "bind service" + bindService(new Intent(MainActivity.this, SocketService.class), mServiceConnection, Context.BIND_AUTO_CREATE));
 //        for (int i = 0; i < 10; i++) {
 //            mHandler.sendEmptyMessageDelayed(0, (i + 1) * 1000);
 //        }
@@ -125,6 +143,19 @@ public class MainActivity extends BaseActivity {
                 "" +
                 "" +
                 "");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.registerReceiver(orientationBR, orientationIF);
+    }
+
+    @Override
+    protected void onPause() {
+        //Unregister the Orientation BroadcasReceiver to avoid a BroadcastReceiver leak
+        this.unregisterReceiver(orientationBR);
+        super.onPause();
     }
 
     @Override
@@ -201,53 +232,6 @@ public class MainActivity extends BaseActivity {
         mPixelProcessingImage.setImageBitmap(pro);
     }
 
-    private void testRxjava() {
-        Observable observable = Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-
-            }
-        });
-        Subscriber<Integer> subscriber = new Subscriber<Integer>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Integer integer) {
-
-
-            }
-        };
-        observable.lift(new Observable.Operator<Integer, String>() {
-
-            @Override
-            public Subscriber<? super String> call(Subscriber<? super Integer> subscriber) {
-                return new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(String s) {
-
-                    }
-                };
-            }
-        }).subscribe(subscriber);
-    }
 
     private void testHttp() {
         try {
@@ -260,9 +244,9 @@ public class MainActivity extends BaseActivity {
 
     @OnClick({R.id.drawpathBtn, R.id.openglBtn
             , R.id.sendMsg, R.id.testScrollerBtn
-            ,R.id.testProAnimator,R.id.testPullView
-            ,R.id.openglBtnView,R.id.testTransition
-    ,R.id.testrefresh_recycle})
+            , R.id.testProAnimator, R.id.testPullView
+            , R.id.openglBtnView, R.id.testTransition
+            , R.id.testrefresh_recycle, R.id.test_touchevent_btn,R.id.imageload})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.drawpathBtn:
@@ -289,6 +273,12 @@ public class MainActivity extends BaseActivity {
             case R.id.testrefresh_recycle:
                 startActivity(new Intent(mContext, TestRefreshActivity.class));
                 break;
+            case R.id.test_touchevent_btn:
+                startActivity(new Intent(mContext, TestTouchEventActivity.class));
+                break;
+            case R.id.imageload:
+                startActivity(new Intent(mContext, ImageLoaderActivity.class));
+                break;
             case R.id.sendMsg:
                 if (mInterface != null) {
                     try {
@@ -312,4 +302,6 @@ public class MainActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
+
 }

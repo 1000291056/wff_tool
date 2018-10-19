@@ -2,7 +2,6 @@ package com.wff.wff_tool.ui.view;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -10,12 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
-import com.classic.adapter.BaseAdapterHelper;
-import com.classic.adapter.CommonRecyclerAdapter;
 import com.wff.wff_tool.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by wufeifei on 2017/3/30.

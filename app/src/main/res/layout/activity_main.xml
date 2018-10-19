@@ -70,7 +70,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="测试刷新refreshview"/>
-
+            <Button
+                android:id="@+id/test_touchevent_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="事件分发"/>
+            <Button
+                android:id="@+id/imageload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="加载图片"/>
             <TextView
                 android:id="@+id/receiveMsgTv"
                 android:layout_width="match_parent"

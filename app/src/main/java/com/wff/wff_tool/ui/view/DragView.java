@@ -12,6 +12,7 @@ import android.widget.Scroller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by wufeifei on 2017/2/13.
@@ -45,13 +46,30 @@ public class DragView extends View {
         mPaint = new Paint();
     }
 
+    /**
+     * @param destX
+     * @param destY 内容移动到触屏位置
+     */
     private void smoothScrollTo(int destX, int destY) {
         int scrollX = this.getScrollX();
         int scrollY = this.getScrollY();
         int deltaX = destX - scrollX;
         int deltaY = destY - scrollY;
-        mScroller.startScroll(scrollX, scrollY, deltaX, deltaY, 1000);
-        invalidate();
+        com.orhanobut.logger.Logger.d("destX=%1$d      destY=%2$d     scrollX=%3$d     scrollY=%4$d     deltaX=%5$d    deltaY=%6$d", destX, destY, scrollX, scrollY, deltaX, deltaY);
+        mScroller.startScroll(scrollX, scrollY, -deltaX, -deltaY);
+        postInvalidate();
+    }
+
+    /**
+     * @param
+     * @param
+     */
+    private void smoothScrollBy(int deltaX, int deltaY) {
+        int scrollX = this.getScrollX();
+        int scrollY = this.getScrollY();
+        com.orhanobut.logger.Logger.d("scrollX=%1$d     scrollY=%2$d     deltaX=%3$d    deltaY=%4$d", scrollX, scrollY, deltaX, deltaY);
+        mScroller.startScroll(scrollX, scrollY, -deltaX, -deltaY);
+        postInvalidate();
     }
 
     @Override
@@ -69,10 +87,10 @@ public class DragView extends View {
         //画数据
         canvas.save();
         mPaint.setColor(Color.GREEN);
-        for (Data d:datas
-             ) {
-            canvas.drawRect(getRectF(d.getMonth()*100, d.getMaxData(), d.getMinData()), mPaint);
-            canvas.drawLine(d.getMonth()*100, -d.getMaxData()-10, d.getMonth()*100, -d.getMinData()+10, mPaint);
+        for (Data d : datas
+                ) {
+            canvas.drawRect(getRectF(d.getMonth() * 100, d.getMaxData(), d.getMinData()), mPaint);
+            canvas.drawLine(d.getMonth() * 100, -d.getMaxData() - 10, d.getMonth() * 100, -d.getMinData() + 10, mPaint);
         }
         canvas.restore();
 
@@ -87,14 +105,31 @@ public class DragView extends View {
         }
     }
 
+    private int lastX;
+    private int lastY;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {//处理触摸事件
         int action = event.getAction();
         switch (action) {
+
             case MotionEvent.ACTION_DOWN:
+                lastX = (int) event.getX();
+                lastY = (int) event.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+//                int dx = (int) (event.getX() - lastX);
+//                int dy = (int) (event.getY() - lastY);
+//                smoothScrollBy(dx, dy);
 //                break;
             case MotionEvent.ACTION_MOVE:
-                smoothScrollTo(-(int) event.getX(), -(int) event.getY());
+                int dx1 = (int) (event.getX() - lastX);
+                int dy1 = (int) (event.getY() - lastY);
+                dy1=0;
+                scrollBy(-dx1,-dy1);
+                //smoothScrollBy(dx1, dy1);
+                lastX = (int) event.getX();
+                lastY = (int) event.getY();
                 break;
         }
         return true;
