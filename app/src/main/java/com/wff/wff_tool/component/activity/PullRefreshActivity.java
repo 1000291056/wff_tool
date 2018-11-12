@@ -1,7 +1,9 @@
-package com.wff.wff_tool;
+package com.wff.wff_tool.component.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.wff.wff_tool.R;
 
 public class PullRefreshActivity extends AppCompatActivity {
 

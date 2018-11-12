@@ -1,4 +1,4 @@
-package com.wff.wff_tool.receiver;
+package com.wff.wff_tool.component.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

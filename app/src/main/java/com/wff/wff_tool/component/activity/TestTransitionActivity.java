@@ -1,4 +1,4 @@
-package com.wff.wff_tool;
+package com.wff.wff_tool.component.activity;
 
 import android.os.Build;
 import android.os.Handler;
@@ -6,12 +6,12 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.ChangeBounds;
-import android.transition.ChangeImageTransform;
 import android.transition.Scene;
 import android.transition.TransitionInflater;
 import android.transition.TransitionManager;
 import android.view.ViewGroup;
+
+import com.wff.wff_tool.R;
 
 public class TestTransitionActivity extends AppCompatActivity {
     Scene scene1, scene2;

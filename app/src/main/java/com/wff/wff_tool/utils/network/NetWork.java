@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.wff.wff_tool.BaseActivity;
+import com.wff.wff_tool.component.activity.BaseActivity;
 import com.wff.wff_tool.dao.listener.CallBack;
 import com.wff.wff_tool.ui.dialog.MyProgressDialog;
 import com.wff.wff_tool.utils.FileUtil;

@@ -1,12 +1,12 @@
-package com.wff.wff_tool;
+package com.wff.wff_tool.component.activity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.wff.wff_tool.R;
 import com.wff.wff_tool.testapi.LruCacheT;
 
 import butterknife.BindView;

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">wff_tool</string>
+    <string name="sendMsg">sendMsg</string>
 </resources>

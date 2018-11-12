@@ -1,4 +1,4 @@
-package com.wff.wff_tool;
+package com.wff.wff_tool.component.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.Menu;
@@ -27,16 +28,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wff.wff_tool.ICallBack;
+import com.wff.wff_tool.IMyAidlInterface;
+import com.wff.wff_tool.R;
 import com.wff.wff_tool.asyctask.MtAsycTask;
 import com.wff.wff_tool.bean.MessageBean;
+import com.wff.wff_tool.dragger.DraggerActivity;
+import com.wff.wff_tool.eventbus.EventBusActivity;
+import com.wff.wff_tool.nativecode.NativeTest;
 import com.wff.wff_tool.okio.OkIO;
-import com.wff.wff_tool.receiver.OrientationBroadcastReceiver;
+import com.wff.wff_tool.component.receiver.OrientationBroadcastReceiver;
 import com.wff.wff_tool.rxjava.RxJava;
 import com.wff.wff_tool.utils.OpenGLActivity;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Executor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -109,14 +119,29 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(MainActivity.this, "失去连接", Toast.LENGTH_SHORT).show();
         }
     };
+    private static List<MessageBean> list = new ArrayList<>();
+    private Handler mHan = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            list.add(new MessageBean());
+            sendEmptyMessage(1);
+        }
+    };
 
-
+    private void testOOM() {
+        mHan.sendEmptyMessage(1);
+    }
+    private void testOOM(int i) {
+        mHan.sendEmptyMessage(1);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        position(3);
+isTaskRoot();
+        testOOM();
         ButterKnife.bind(this);
         //NetWork.searchBook();
         new OkIO().testOkio();
@@ -127,7 +152,7 @@ public class MainActivity extends BaseActivity {
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectActivityLeaks().build());
         new RxJava(this).rxjava();
         Log.i(TAG, "onCreate____________________");
-//        new NativeTest();
+        new NativeTest();
 //        pixelProcessing();
         // Log.i(TAG, "bind service" + bindService(new Intent(MainActivity.this, SocketService.class), mServiceConnection, Context.BIND_AUTO_CREATE));
 //        for (int i = 0; i < 10; i++) {
@@ -135,7 +160,10 @@ public class MainActivity extends BaseActivity {
 //        }
 //        MqttC
     }
-
+    private static final int BITS_PER_UNIT = 8;
+    private int position(int idx) { // bits big-endian in each unit
+        return 1 << (BITS_PER_UNIT - 1 - (idx % BITS_PER_UNIT));
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -186,7 +214,13 @@ public class MainActivity extends BaseActivity {
 
     private void testAsync() {
         MtAsycTask asycTask = new MtAsycTask();
-        asycTask.execute();
+        //asycTask.execute();
+//        asycTask.executeOnExecutor(new Executor() {
+//            @Override
+//            public void execute(@NonNull Runnable command) {
+//                MtAsycTask.THREAD_POOL_EXECUTOR.execute();
+//            }
+//        });
     }
 
     private void testClass() {
@@ -246,7 +280,7 @@ public class MainActivity extends BaseActivity {
             , R.id.sendMsg, R.id.testScrollerBtn
             , R.id.testProAnimator, R.id.testPullView
             , R.id.openglBtnView, R.id.testTransition
-            , R.id.testrefresh_recycle, R.id.test_touchevent_btn,R.id.imageload})
+            , R.id.testrefresh_recycle, R.id.test_touchevent_btn, R.id.imageload,R.id.viewpager,R.id.dragger2,R.id.eventbus})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.drawpathBtn:
@@ -278,6 +312,15 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.imageload:
                 startActivity(new Intent(mContext, ImageLoaderActivity.class));
+                break;
+            case R.id.viewpager:
+                startActivity(new Intent(mContext, ViewpagerActivity.class));
+                break;
+            case R.id.dragger2:
+                startActivity(new Intent(mContext, DraggerActivity.class));
+                break;
+            case R.id.eventbus:
+                startActivity(new Intent(mContext, EventBusActivity.class));
                 break;
             case R.id.sendMsg:
                 if (mInterface != null) {

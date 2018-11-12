@@ -1,9 +1,8 @@
-package com.wff.wff_tool;
+package com.wff.wff_tool.component.activity;
 
 import android.os.Bundle;
 
 import com.wff.wff_tool.ui.view.DragView;
-import com.wff.wff_tool.ui.view.TestScrollerView;
 
 /**
  * Created by wufeifei on 2017/2/13.

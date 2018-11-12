@@ -1,4 +1,4 @@
-package com.wff.wff_tool;
+package com.wff.wff_tool.component.activity;
 
 import android.animation.ValueAnimator;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
+import com.wff.wff_tool.R;
 import com.wff.wff_tool.ui.view.CircleView;
 
 import butterknife.BindView;

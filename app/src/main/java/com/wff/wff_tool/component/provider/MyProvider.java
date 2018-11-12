@@ -1,4 +1,4 @@
-package com.wff.wff_tool.provider;
+package com.wff.wff_tool.component.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

@@ -7,6 +7,10 @@ import android.os.AsyncTask;
  */
 
 public class MtAsycTask extends AsyncTask {
+    public MtAsycTask() {
+        super();
+    }
+
     @Override
     protected Object doInBackground(Object[] params) {
         return null;

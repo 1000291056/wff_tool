@@ -1,4 +1,4 @@
-package com.wff.wff_tool;
+package com.wff.wff_tool.component.activity;
 
 import android.net.Uri;
 import android.os.Bundle;

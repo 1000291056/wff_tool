@@ -3,7 +3,7 @@ package com.wff.wff_tool.utils;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
-import com.wff.wff_tool.BaseActivity;
+import com.wff.wff_tool.component.activity.BaseActivity;
 import com.wff.wff_tool.ui.view.MyGLSurfaceView;
 
 /**
