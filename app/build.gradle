@@ -14,8 +14,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
         multiDexEnabled true
-        ndk{
-            abiFilters "armeabi-v7a","x86"   //这里是编译的配置
+        ndk {
+            abiFilters "armeabi-v7a", "x86"   //这里是编译的配置
         }
     }
     buildTypes {

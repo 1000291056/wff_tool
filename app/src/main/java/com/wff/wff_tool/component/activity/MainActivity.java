@@ -39,6 +39,7 @@ import com.wff.wff_tool.nativecode.NativeTest;
 import com.wff.wff_tool.okio.OkIO;
 import com.wff.wff_tool.component.receiver.OrientationBroadcastReceiver;
 import com.wff.wff_tool.rxjava.RxJava;
+import com.wff.wff_tool.ui.view.CustomLineLayout;
 import com.wff.wff_tool.utils.OpenGLActivity;
 
 import java.net.URL;
@@ -285,7 +286,9 @@ public class MainActivity extends BaseActivity {
             , R.id.sendMsg, R.id.testScrollerBtn
             , R.id.testProAnimator, R.id.testPullView
             , R.id.openglBtnView, R.id.testTransition
-            , R.id.testrefresh_recycle, R.id.test_touchevent_btn, R.id.imageload, R.id.viewpager, R.id.dragger2, R.id.eventbus})
+            , R.id.testrefresh_recycle, R.id.test_touchevent_btn
+            , R.id.imageload, R.id.viewpager, R.id.dragger2
+            , R.id.eventbus,R.id.custom_ll})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.drawpathBtn:
@@ -326,6 +329,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.eventbus:
                 startActivity(new Intent(mContext, EventBusActivity.class));
+                break;
+            case R.id.custom_ll:
+                startActivity(new Intent(mContext, CustomLinelayoutActivity.class));
                 break;
             case R.id.sendMsg:
                 if (mInterface != null) {

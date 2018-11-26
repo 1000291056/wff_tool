@@ -25,9 +25,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
-
         </activity>
         <activity android:name=".component.activity.DrawPathActivity" />
         <activity android:name=".component.activity.MyOpenGLActivity" />
@@ -43,8 +41,9 @@
         <activity android:name=".component.activity.TestTouchEventActivity" />
         <activity android:name=".component.activity.ImageLoaderActivity" />
         <activity android:name=".component.activity.ViewpagerActivity" />
-        <!--<activity android:name=".dragger.DraggerActivity" />-->
-        <!--<activity android:name=".eventbus.EventBusActivity"/>-->
+        <!-- <activity android:name=".dragger.DraggerActivity" /> -->
+        <!-- <activity android:name=".eventbus.EventBusActivity"/> -->
+        <activity android:name=".component.activity.CustomLinelayoutActivity"></activity>
     </application>
 
 </manifest>

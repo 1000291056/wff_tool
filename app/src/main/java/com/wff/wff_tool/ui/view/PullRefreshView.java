@@ -127,6 +127,13 @@ public class PullRefreshView extends LinearLayout {
         return true;
     }
 
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        com.orhanobut.logger.Logger.d("mode:"+MeasureSpec.getMode(widthMeasureSpec)+"   size:"+MeasureSpec.getSize(widthMeasureSpec));
+    }
+
     enum Direct {
         UP, DOWN;
     }
