@@ -15,7 +15,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Created by wufeifei on 2016/12/9.
@@ -46,19 +50,21 @@ public class DrawPathView extends View {
      */
     private double realAngle = 90;
     private int scale = SWINGANGLESCALE;
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case POSTINVALIDATE:
-                    Swing swing = (Swing) msg.obj;
-                    mIndicatorAngle = swing.getAngel();
-                    invalidate();
-                    break;
-            }
-        }
-    };
+    private PointState mPointState = PointState.STOP;//指针是否在摆动
+    private LinkedList<Float> datas = new LinkedList();
+//    private Handler mHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            switch (msg.what) {
+//                case POSTINVALIDATE:
+//                    Swing swing = (Swing) msg.obj;
+//                    mIndicatorAngle = swing.getAngel();
+//                    invalidate();
+//                    break;
+//            }
+//        }
+//    };
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -76,7 +82,6 @@ public class DrawPathView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Path path = new Path();
-
 
         canvas.translate(getWidth() / 2, getHeight() / 2);
         mPaint.setStyle(Paint.Style.STROKE);
@@ -132,7 +137,17 @@ public class DrawPathView extends View {
         ////路径 指针
         mPaint.setColor(Color.RED);
         canvas.save();
-        canvas.rotate((float) mIndicatorAngle);
+        if (mPointState == PointState.SWING) {
+            Float d = datas.poll();
+            if (d != null) {
+                canvas.rotate(d.floatValue());
+            }
+            if (datas.isEmpty()) {
+                mPointState = PointState.STOP;
+            }
+        } else {
+            canvas.rotate((float) mIndicatorAngle);
+        }
         path.moveTo(-5, 30);
         path.lineTo(5, 30);
         path.lineTo(0, getHeight() > getWidth() ? -getWidth() / 2 + 10 : -getHeight() / 2 + 10);
@@ -152,7 +167,9 @@ public class DrawPathView extends View {
         canvas.save();
         canvas.drawText("相对于x轴角度:" + realAngle, 0, -(getWidth() / 2 + 50), paintText);
         canvas.restore();
-
+        if (!datas.isEmpty()) {
+            invalidate();
+        }
 
     }
 
@@ -161,8 +178,38 @@ public class DrawPathView extends View {
      *
      * @param angle 最终角度
      */
+//    private void swing(double angle) {
+//        if (!datas.isEmpty()) {
+//            datas.clear();
+//        }
+//        double indicatorAngle;
+//        int scale = SWINGANGLESCALE;
+//        int timeS = 1;
+//        while (scale > 0) {
+//            for (int i = 0; i < 2; i++) {
+//                timeS++;
+//                if (i == 0) {
+//                    indicatorAngle = (mIndicatorAngle + 2 * scale);
+//
+//                } else {
+//                    indicatorAngle = (mIndicatorAngle - 2 * scale);
+//                }
+//                Message messageTEMP2 = mHandler.obtainMessage();
+//                messageTEMP2.what = POSTINVALIDATE;
+//                messageTEMP2.obj = new Swing(indicatorAngle);
+//                mHandler.sendMessageDelayed(messageTEMP2, timeS * 100);
+//            }
+//            scale -= 0.5;
+//        }
+//        Message messageTEMP2 = mHandler.obtainMessage();
+//        messageTEMP2.what = POSTINVALIDATE;
+//        messageTEMP2.obj = new Swing(mfinalIndicatorAngle);
+//        mHandler.sendMessageDelayed(messageTEMP2, timeS * 100);
+//    }
     private void swing(double angle) {
-
+        if (!datas.isEmpty()) {
+            datas.clear();
+        }
         double indicatorAngle;
         int scale = SWINGANGLESCALE;
         int timeS = 1;
@@ -175,17 +222,12 @@ public class DrawPathView extends View {
                 } else {
                     indicatorAngle = (mIndicatorAngle - 2 * scale);
                 }
-                Message messageTEMP2 = mHandler.obtainMessage();
-                messageTEMP2.what = POSTINVALIDATE;
-                messageTEMP2.obj = new Swing(indicatorAngle);
-                mHandler.sendMessageDelayed(messageTEMP2, timeS * 100);
+                datas.offer((float) indicatorAngle);
             }
             scale -= 0.5;
         }
-        Message messageTEMP2 = mHandler.obtainMessage();
-        messageTEMP2.what = POSTINVALIDATE;
-        messageTEMP2.obj = new Swing(mfinalIndicatorAngle);
-        mHandler.sendMessageDelayed(messageTEMP2, timeS * 100);
+        datas.offer((float) mfinalIndicatorAngle);
+        invalidate();
     }
 
     /**
@@ -231,9 +273,11 @@ public class DrawPathView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
+                mPointState = PointState.STOP;
                 caculateAngle(event.getX(), event.getY());
                 break;
             case MotionEvent.ACTION_UP:
+                mPointState = PointState.SWING;
                 swing(mfinalIndicatorAngle);
                 break;
         }
@@ -261,29 +305,34 @@ public class DrawPathView extends View {
         invalidate();
     }
 
-    public double getRealAngle() {
-        return realAngle;
-    }
+//    public double getRealAngle() {
+//        return realAngle;
+//    }
+//
+//    public void setRealAngle(double realAngle) {
+//        this.realAngle = realAngle;
+//
+//        mfinalIndicatorAngle = mIndicatorAngle = 90 - realAngle;
+//    }
 
-    public void setRealAngle(double realAngle) {
-        this.realAngle = realAngle;
+//    class Swing implements Serializable {
+//        private double angel;
+//
+//        public Swing(double angel) {
+//            this.angel = angel;
+//        }
+//
+//        public double getAngel() {
+//            return angel;
+//        }
+//
+//        public void setAngel(double angel) {
+//            this.angel = angel;
+//        }
+//    }
 
-        mfinalIndicatorAngle = mIndicatorAngle = 90 - realAngle;
-    }
-
-    class Swing implements Serializable {
-        private double angel;
-
-        public Swing(double angel) {
-            this.angel = angel;
-        }
-
-        public double getAngel() {
-            return angel;
-        }
-
-        public void setAngel(double angel) {
-            this.angel = angel;
-        }
+    enum PointState {
+        STOP//停止状态
+        , SWING//摆动状态
     }
 }

@@ -132,15 +132,17 @@ public class MainActivity extends BaseActivity {
     private void testOOM() {
         mHan.sendEmptyMessage(1);
     }
+
     private void testOOM(int i) {
         mHan.sendEmptyMessage(1);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         position(3);
-isTaskRoot();
+        isTaskRoot();
         testOOM();
         ButterKnife.bind(this);
         //NetWork.searchBook();
@@ -152,7 +154,7 @@ isTaskRoot();
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectActivityLeaks().build());
         new RxJava(this).rxjava();
         Log.i(TAG, "onCreate____________________");
-        new NativeTest();
+//        new NativeTest();
 //        pixelProcessing();
         // Log.i(TAG, "bind service" + bindService(new Intent(MainActivity.this, SocketService.class), mServiceConnection, Context.BIND_AUTO_CREATE));
 //        for (int i = 0; i < 10; i++) {
@@ -160,10 +162,13 @@ isTaskRoot();
 //        }
 //        MqttC
     }
+
     private static final int BITS_PER_UNIT = 8;
+
     private int position(int idx) { // bits big-endian in each unit
         return 1 << (BITS_PER_UNIT - 1 - (idx % BITS_PER_UNIT));
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -176,13 +181,13 @@ isTaskRoot();
     @Override
     protected void onResume() {
         super.onResume();
-        this.registerReceiver(orientationBR, orientationIF);
+        //this.registerReceiver(orientationBR, orientationIF);
     }
 
     @Override
     protected void onPause() {
         //Unregister the Orientation BroadcasReceiver to avoid a BroadcastReceiver leak
-        this.unregisterReceiver(orientationBR);
+//        this.unregisterReceiver(orientationBR);
         super.onPause();
     }
 
@@ -280,7 +285,7 @@ isTaskRoot();
             , R.id.sendMsg, R.id.testScrollerBtn
             , R.id.testProAnimator, R.id.testPullView
             , R.id.openglBtnView, R.id.testTransition
-            , R.id.testrefresh_recycle, R.id.test_touchevent_btn, R.id.imageload,R.id.viewpager,R.id.dragger2,R.id.eventbus})
+            , R.id.testrefresh_recycle, R.id.test_touchevent_btn, R.id.imageload, R.id.viewpager, R.id.dragger2, R.id.eventbus})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.drawpathBtn:

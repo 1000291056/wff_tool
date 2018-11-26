@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_com_wff_wff_1tool_nativecode_NativeObject_printMsg
  * Method:    makeIntArray
  * Signature: (I)[I
  */
-JNIEXPORT jintArray JNICALL Java_com_wff_wff_1tool_nativecode_NativeObject_makeIntArray
+JNIEXPORT jintArray JNICALL Java_com_wff_wff_1tool_nativecode_NativeObject_makeIntArray__I
         (JNIEnv *env, jobject jobject, jint size) {
     jsize mJsize = 5;
     jintArray array = (env)->NewIntArray( mJsize);

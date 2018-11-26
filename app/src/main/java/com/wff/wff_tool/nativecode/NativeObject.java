@@ -6,7 +6,7 @@ package com.wff.wff_tool.nativecode;
 
 public class NativeObject {
     static {
-        System.loadLibrary("native_lib");
+        System.loadLibrary("hello");
     }
     public native void printMsg(String msg);
     public native int[] makeIntArray(int size);
