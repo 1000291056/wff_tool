@@ -1,5 +1,6 @@
 package com.wff.wff_tool.component.activity;
 
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,9 +55,12 @@ public class TestAnimatorActivity extends AppCompatActivity {
                 mCircle.setX(h);
                 mCircle.setTranslationY(v);
                 mCircle.setAlpha(1 - time / 10);
-                mImv.setScaleY(time / 20);
+                //mImv.setScaleY(time / 20);
             }
         });
+        ObjectAnimator objectAnimator=ObjectAnimator.ofFloat(mImv,"rotation",0,360);
+        objectAnimator.setDuration(1500);
+        objectAnimator.start();
         valueAnimator.start();
     }
 

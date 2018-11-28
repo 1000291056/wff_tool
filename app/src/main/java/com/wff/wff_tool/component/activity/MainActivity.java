@@ -144,7 +144,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         position(3);
         isTaskRoot();
-        testOOM();
+//        testOOM();
         ButterKnife.bind(this);
         //NetWork.searchBook();
         new OkIO().testOkio();
@@ -288,7 +288,7 @@ public class MainActivity extends BaseActivity {
             , R.id.openglBtnView, R.id.testTransition
             , R.id.testrefresh_recycle, R.id.test_touchevent_btn
             , R.id.imageload, R.id.viewpager, R.id.dragger2
-            , R.id.eventbus,R.id.custom_ll})
+            , R.id.eventbus,R.id.custom_ll,R.id.vector})
     public void OnClick(View view) {
         switch (view.getId()) {
             case R.id.drawpathBtn:
@@ -332,6 +332,9 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.custom_ll:
                 startActivity(new Intent(mContext, CustomLinelayoutActivity.class));
+                break;
+            case R.id.vector:
+                startActivity(new Intent(mContext, VectorActivity.class));
                 break;
             case R.id.sendMsg:
                 if (mInterface != null) {

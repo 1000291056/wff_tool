@@ -43,7 +43,8 @@
         <activity android:name=".component.activity.ViewpagerActivity" />
         <!-- <activity android:name=".dragger.DraggerActivity" /> -->
         <!-- <activity android:name=".eventbus.EventBusActivity"/> -->
-        <activity android:name=".component.activity.CustomLinelayoutActivity"></activity>
+        <activity android:name=".component.activity.CustomLinelayoutActivity" />
+        <activity android:name=".component.activity.VectorActivity"></activity>
     </application>
 
 </manifest>

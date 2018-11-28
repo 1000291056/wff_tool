@@ -24,6 +24,7 @@ public class CustomLineLayout extends ViewGroup {
             margin_b = typedArray.getDimension(R.styleable.custom_stytle_margin_botom, 0);
             margin_l = typedArray.getDimension(R.styleable.custom_stytle_margin_left, 0);
         }
+        Logger.d("margin=%f",margin);
     }
 
     public CustomLineLayout(Context context) {

@@ -11,7 +11,7 @@ import android.widget.TextView;
  * Created by wufeifei on 2017/2/13.
  */
 
-public class TestScrollerView extends TextView implements View.OnTouchListener {
+public class TestScrollerView extends android.support.v7.widget.AppCompatTextView implements View.OnTouchListener {
     private Context context;
     private Scroller scroller;
 

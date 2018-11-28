@@ -90,16 +90,18 @@ public class PullRefreshView extends LinearLayout {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        com.orhanobut.logger.Logger.e("onScrollChanged    l=" + l);
-        com.orhanobut.logger.Logger.e("onScrollChanged    t=" + t);
-        com.orhanobut.logger.Logger.e("onScrollChanged  oldl=" + oldl);
-        com.orhanobut.logger.Logger.e("onScrollChanged  oldt=" + oldt);
+        com.orhanobut.logger.Logger.e("onScrollChanged    l=%d t=%d" , l,t);
         if (t > -mHeadView.getMeasuredHeight() && t < 0) {
             mHeadView.setVisibility(View.VISIBLE);
             mHeadView.startMyAnimation();
         } else {
 //            mHeadView.hideHead();
         }
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return super.onInterceptTouchEvent(ev);
     }
 
     @Override

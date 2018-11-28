@@ -100,6 +100,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="自定义LineLayout"/>
+            <Button
+                android:id="@+id/vector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="矢量图及动画"/>
             <TextView
                 android:id="@+id/receiveMsgTv"
                 android:layout_width="match_parent"
