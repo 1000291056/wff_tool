@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".component.activity.TestTouchEventActivity">
 
-    <com.wff.wff_tool.ui.view.TouchEventView
+    <com.wff.androidtool.ui.view.TouchEventView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.wff.wff_tool.ui.view.TouchEventView>
+        android:layout_height="match_parent"></com.wff.androidtool.ui.view.TouchEventView>
 </LinearLayout>

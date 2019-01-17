@@ -6,5 +6,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.wff.wff_tool.component.activity.TestTransitionActivity">
+    tools:context="com.wff.androidtool.component.activity.TestTransitionActivity">
 </LinearLayout>

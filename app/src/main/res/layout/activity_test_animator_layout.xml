@@ -11,12 +11,13 @@
         android:id="@+id/imv"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:scaleType="fitCenter"
+        android:scaleType="fitXY"
         android:src="@mipmap/timg"
         android:visibility="visible"/>
 
-    <com.wff.wff_tool.ui.view.CircleView
+    <com.wff.androidtool.ui.view.CircleView
         android:id="@+id/circle"
+        android:visibility="invisible"
         android:layout_width="112dp"
         android:layout_height="115dp"/>
 
