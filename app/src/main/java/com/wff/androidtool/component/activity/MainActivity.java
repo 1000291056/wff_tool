@@ -1,6 +1,5 @@
 package com.wff.androidtool.component.activity;
 
-import android.Manifest;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -28,9 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.orhanobut.logger.Logger;
-import com.tbruyelle.rxpermissions2.Permission;
-import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wff.androidtool.ICallBack;
 import com.wff.androidtool.IMyAidlInterface;
 import com.wff.androidtool.R;
@@ -42,7 +38,7 @@ import com.wff.androidtool.nativecode.NativeTest;
 import com.wff.androidtool.okio.OkIO;
 import com.wff.androidtool.component.receiver.OrientationBroadcastReceiver;
 import com.wff.androidtool.rxjava.RxJava2;
-import com.wff.androidtool.utils.OpenGLActivity;
+import com.wff.androidtool.utils.FileUtil;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -53,7 +49,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.functions.Consumer;
 
 /**
  * @author wufeifei
@@ -157,24 +152,26 @@ public class MainActivity extends BaseActivity {
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectActivityLeaks().build());
 //        new RxJava(this).rxjava();
         new RxJava2().rxjava2();
-        RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.requestEach(Manifest.permission.CAMERA)
-                .subscribe(new Consumer<Permission>() {
-                    @Override
-                    public void accept(Permission permission) throws Exception {
-                        if (permission.granted) {
-                            Logger.d("用户给权限啦");
-                            return;
-                        }
-                        if (permission.shouldShowRequestPermissionRationale) {
-                            Logger.d("用户不给权限");
-                            return;
-                        }
-                        Logger.d("弹窗不显示");
-                    }
-                });
+        FileUtil.readFile(this);
+//        RxPermissions rxPermissions = new RxPermissions(this);
+//        rxPermissions.requestEach(Manifest.permission.CAMERA)
+//                .subscribe(new Consumer<Permission>() {
+//                    @Override
+//                    public void accept(Permission permission) throws Exception {
+//                        if (permission.granted) {
+//                            Logger.d("用户给权限啦");
+//                            return;
+//                        }
+//                        if (permission.shouldShowRequestPermissionRationale) {
+//                            Logger.d("用户不给权限");
+//                            return;
+//                        }
+//                        Logger.d("弹窗不显示");
+//                    }
+//                });
         Log.i(TAG, "onCreate____________________");
         new NativeTest();
+//        Logger.d(new MemInfo(this).getHandSetInfo());
 //        pixelProcessing();
         // Log.i(TAG, "bind service" + bindService(new Intent(MainActivity.this, SocketService.class), mServiceConnection, Context.BIND_AUTO_CREATE));
 //        for (int i = 0; i < 10; i++) {
@@ -185,6 +182,11 @@ public class MainActivity extends BaseActivity {
 
     private static final int BITS_PER_UNIT = 8;
 
+    /**
+     * 测试dex2jar是否能反编译
+     * @param idx
+     * @return
+     */
     private int position(int idx) { // bits big-endian in each unit
         return 1 << (BITS_PER_UNIT - 1 - (idx % BITS_PER_UNIT));
     }
@@ -329,7 +331,7 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(mContext, PullRefreshActivity.class));
                 break;
             case R.id.openglBtnView:
-                startActivity(new Intent(mContext, OpenGLActivity.class));
+                startActivity(new Intent(mContext, MyOpenGLActivity.class));
                 break;
             case R.id.testTransition:
                 startActivity(new Intent(mContext, TestTransitionActivity.class));
@@ -356,7 +358,7 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(mContext, CustomLinelayoutActivity.class));
                 break;
             case R.id.vector:
-                startActivity(new Intent(mContext, VectorActivity.class));
+                //startActivity(new Intent(mContext, VectorActivity.class));
                 break;
             case R.id.md:
                 startActivity(new Intent(mContext, MaterialDesignActivity.class));

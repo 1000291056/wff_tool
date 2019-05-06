@@ -6,6 +6,8 @@
 #include "School.h"
 #include <string>
 #include "com_wff_androidtool_nativecode_NativeObject.h"
+#include "stdio.h"
+#include <android/log.h>
 
 void printMsg(JNIEnv *env, jobject jobject, jstring str);
 /*
@@ -28,6 +30,7 @@ JNIEXPORT void JNICALL Java_com_wff_androidtool_nativecode_NativeObject_printMsg
     char *showname = school.showName();
     jstring tag = (env)->NewStringUTF("from jni:");
     jstring msg = (env)->NewStringUTF(showname);
+
     (env)->CallStaticIntMethod(jclass, logMethod, tag, str);
     (env)->CallStaticIntMethod(jclass, logMethod, tag, msg);
     (env)->DeleteLocalRef(tag);
@@ -110,5 +113,34 @@ void printMsg(JNIEnv *env, jobject jobject, jstring str) {
     (env)->CallStaticIntMethod(jclass, logMethod, tag, tag);
     (env)->CallStaticIntMethod(jclass, logMethod, tag, str);
     (env)->DeleteLocalRef(tag);
+
+};
+/*
+ * Class:     com_wff_androidtool_nativecode_NativeObject
+ * Method:    printByteArrayElement
+ * Signature: ([B)V
+ */
+JNIEXPORT void JNICALL Java_com_wff_androidtool_nativecode_NativeObject_printByteArrayElement
+        (JNIEnv *env, jobject o, jbyteArray jba) {
+    jbyte *jb = env->GetByteArrayElements(jba, 0);
+
+    char *msgTemp = NULL;
+    msgTemp = new char[env->GetArrayLength(jba) + 1];
+    memset(msgTemp, 0, env->GetArrayLength(jba) + 1);
+    memcpy(msgTemp, jb, env->GetArrayLength(jba));
+    msgTemp[env->GetArrayLength(jba)] = 0;
+    jstring msg = env->NewStringUTF(msgTemp);
+    jboolean exce = env->ExceptionCheck();
+
+    jstring i_str = (env)->NewStringUTF(("exce="+std::to_string(exce)).data());
+    printMsg(env, o, msg);
+    printMsg(env, o, i_str);
+    if (exce <= 0) {
+
+    }
+__android_log_print(ANDROID_LOG_ERROR,"------","1111111111");
+    env->DeleteLocalRef(msg);
+    env->DeleteLocalRef(i_str);
+    env->ReleaseByteArrayElements(jba, jb, 0);
 
 };

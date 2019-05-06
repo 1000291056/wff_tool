@@ -1,9 +1,14 @@
 package com.wff.androidtool.utils;
 
+import android.content.Context;
 import android.os.Environment;
+
+import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Created by wufeifei on 2016/11/21.
@@ -26,7 +31,7 @@ public class FileUtil {
         if (dotIndex < 0) {
             return type;
         }
-    /* 获取文件的后缀名*/
+        /* 获取文件的后缀名*/
         String end = fName.substring(dotIndex, fName.length()).toLowerCase();
         if (end == "") return type;
         //在MIME和文件类型的匹配表中找到对应的MIME类型。
@@ -117,4 +122,37 @@ public class FileUtil {
             {".zip", "application/x-zip-compressed"},
             {"", "*/*"}
     };
+
+    public static void readFile(Context context) {
+        InputStreamReader reader = null;
+        InputStream in = null;
+        try {
+             in = context.getAssets().open("bar_chart.json");
+             reader = new InputStreamReader(in);
+            char[] buffer = new char[1024];
+            StringBuffer stringBuffer = new StringBuffer();
+            int size = -1;
+            while ((size = reader.read(buffer)) > 0) {
+                stringBuffer.append(buffer, 0, size);
+            }
+            Logger.d(stringBuffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if (reader!=null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (in!=null){
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

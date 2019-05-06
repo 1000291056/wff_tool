@@ -2,6 +2,8 @@ package com.wff.androidtool.nativecode;
 
 import android.util.Log;
 
+import java.nio.charset.Charset;
+
 /**
  * Created by 13248 on 2018/4/23.
  */
@@ -20,6 +22,7 @@ public class NativeTest {
         }
         int twoArray[][] = o.makeIntArray(4, 5);
         o.printIntArrayElement(new int[]{3, 5, 7});
+        o.printByteArrayElement("我是bt".getBytes(Charset.forName("utf-8")));
         o.printMsg("test jni - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - -  - - - - - -end");
     }
 }

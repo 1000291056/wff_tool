@@ -30,7 +30,6 @@
                 android:src="@drawable/animated_vector" />
 
             <TextView
-                android:id="@+id/head"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorAccent"
@@ -39,7 +38,6 @@
 
 
         <TextView
-            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimaryDark"
@@ -50,7 +48,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/foot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="上拉加载" />

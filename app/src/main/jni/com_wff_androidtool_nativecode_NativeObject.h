@@ -47,6 +47,14 @@ JNIEXPORT void JNICALL Java_com_wff_androidtool_nativecode_NativeObject_testCObj
 JNIEXPORT void JNICALL Java_com_wff_androidtool_nativecode_NativeObject_printIntArrayElement
   (JNIEnv *, jobject, jintArray);
 
+/*
+ * Class:     com_wff_androidtool_nativecode_NativeObject
+ * Method:    printByteArrayElement
+ * Signature: ([B)V
+ */
+JNIEXPORT void JNICALL Java_com_wff_androidtool_nativecode_NativeObject_printByteArrayElement
+  (JNIEnv *, jobject, jbyteArray);
+
 #ifdef __cplusplus
 }
 #endif

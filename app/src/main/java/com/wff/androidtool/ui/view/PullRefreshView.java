@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
  */
 
 public class PullRefreshView extends LinearLayout {
-    private HeadView mHeadView;
+//    private HeadView mHeadView;
     private View mFootView;
     private OnPullDownListener mOnPullDownListener;
     private OnPullUpListener mOnPullUpListener;
@@ -55,8 +55,8 @@ public class PullRefreshView extends LinearLayout {
 
     private void init() {
         mScrollerCompat = ScrollerCompat.create(getContext());
-        mHeadView = new HeadView(getContext());
-        this.addView(mHeadView, 0);
+//        mHeadView = new HeadView(getContext());
+//        this.addView(mHeadView, 0);
 
     }
 
@@ -70,60 +70,60 @@ public class PullRefreshView extends LinearLayout {
         }
     }
 
-    private void smoothScrollTo(int dX, int dY) {
-        if (mDirect == Direct.DOWN && -getScrollY() > mHeadView.getMeasuredHeight()) {
-            return;
-        }
-        int scrollX = this.getScrollX();
-        int scrollY = this.getScrollY();
-        mScrollerCompat.startScroll(scrollX, scrollY, dX, dY, 0);
-        invalidate();
-    }
+//    private void smoothScrollTo(int dX, int dY) {
+//        if (mDirect == Direct.DOWN && -getScrollY() > mHeadView.getMeasuredHeight()) {
+//            return;
+//        }
+//        int scrollX = this.getScrollX();
+//        int scrollY = this.getScrollY();
+//        mScrollerCompat.startScroll(scrollX, scrollY, dX, dY, 0);
+//        invalidate();
+//    }
 
-    @Override
-    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        super.onScrollChanged(l, t, oldl, oldt);
-//        com.orhanobut.logger.Logger.e("onScrollChanged    l=%d t=%d" , l,t);
-        View content=getChildAt(0);//表示内容的子view
-        com.orhanobut.logger.Logger.e("onScrollChanged    getHeight()=%d getScrollY()=%d getMeasuredHeight()=%d" , getHeight(),getScrollY(),getMeasuredHeight());
-        com.orhanobut.logger.Logger.e("子onScrollChanged    getHeight()=%d getScrollY()=%d getMeasuredHeight()=%d" , content.getHeight(),content.getScrollY(),content.getMeasuredHeight());
-        if (t > -mHeadView.getMeasuredHeight() && t < 0) {
-            mHeadView.setVisibility(View.VISIBLE);
-            mHeadView.startMyAnimation();
-        } else {
-//            mHeadView.hideHead();
-        }
-    }
+//    @Override
+//    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+//        super.onScrollChanged(l, t, oldl, oldt);
+////        com.orhanobut.logger.Logger.e("onScrollChanged    l=%d t=%d" , l,t);
+//        View content=getChildAt(0);//表示内容的子view
+//        com.orhanobut.logger.Logger.e("onScrollChanged    getHeight()=%d getScrollY()=%d getMeasuredHeight()=%d" , getHeight(),getScrollY(),getMeasuredHeight());
+//        com.orhanobut.logger.Logger.e("子onScrollChanged    getHeight()=%d getScrollY()=%d getMeasuredHeight()=%d" , content.getHeight(),content.getScrollY(),content.getMeasuredHeight());
+//        if (t > -mHeadView.getMeasuredHeight() && t < 0) {
+//            mHeadView.setVisibility(View.VISIBLE);
+//            mHeadView.startMyAnimation();
+//        } else {
+////            mHeadView.hideHead();
+//        }
+//    }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return super.onInterceptTouchEvent(ev);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {//处理触摸事件
-        int action = event.getAction();
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                lastX = (int) event.getX();
-                lasty = (int) event.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                if (event.getY() > lasty) {
-                    mDirect = Direct.DOWN;
-                } else {
-                    mDirect = Direct.UP;
-                }
-                smoothScrollTo(lastX - (int) event.getX(), lasty - (int) event.getY());
-                lastX = (int) event.getX();
-                lasty = (int) event.getY();
-                break;
-            case MotionEvent.ACTION_UP:
-//                smoothScrollTo(lastX-(int) event.getX(), lasty-(int) event.getY());
-                break;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {//处理触摸事件
+//        int action = event.getAction();
+//        switch (action) {
+//            case MotionEvent.ACTION_DOWN:
+//                lastX = (int) event.getX();
+//                lasty = (int) event.getY();
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                if (event.getY() > lasty) {
+//                    mDirect = Direct.DOWN;
+//                } else {
+//                    mDirect = Direct.UP;
+//                }
+//                smoothScrollTo(lastX - (int) event.getX(), lasty - (int) event.getY());
+//                lastX = (int) event.getX();
+//                lasty = (int) event.getY();
+//                break;
+//            case MotionEvent.ACTION_UP:
+////                smoothScrollTo(lastX-(int) event.getX(), lasty-(int) event.getY());
+//                break;
+//        }
+//        return true;
+//    }
 
 
     @Override

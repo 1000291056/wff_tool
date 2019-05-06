@@ -1,16 +1,15 @@
 package com.wff.androidtool.component.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 
+import com.wff.androidtool.ui.view.TestArcDrawView;
 
-/**
- * Created by wufeifei on 2017/2/13.
- */
+public class TestDrawActivity extends Activity {
 
-public class TestScrollerActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(new DragView(mContext));
+        setContentView(new TestArcDrawView(this));
     }
 }
