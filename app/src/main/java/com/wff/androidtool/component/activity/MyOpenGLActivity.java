@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
+import android.opengl.GLES10;
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wff.androidtool.opengles.Triangle;
 import com.wff.androidtool.ui.view.OpenGLRenderer;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -38,7 +41,7 @@ public class MyOpenGLActivity extends Activity {
         if (isSupportOpenGl = supportOpenGl()) {
             mGlSurfaceView = new GLSurfaceView(this);
             mGlSurfaceView.setEGLContextClientVersion(2);
-            mGlSurfaceView.setRenderer(new MyRender());
+            mGlSurfaceView.setRenderer(new MyRender(this));
             setContentView(mGlSurfaceView);
         } else {
             setContentView(new TextView(this));
@@ -67,6 +70,16 @@ public class MyOpenGLActivity extends Activity {
      */
     static class MyRender implements GLSurfaceView.Renderer {
         /**
+         * 绘制的三角形
+         */
+        private Triangle mTriangle;
+        private Context mContext;
+
+        public MyRender(Context context) {
+            mContext = context;
+        }
+
+        /**
          * 当Surface被创建的时候，GLSurfaceView会调用这个方法，
          * 这发生在应用程序创建的第一次，并且当设备被唤醒或者用户从其他activity切换回去时，
          * 也会被调用
@@ -76,7 +89,8 @@ public class MyOpenGLActivity extends Activity {
          */
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            gl.glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+            GLES20.glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+            mTriangle = new Triangle(mContext);
         }
 
         /**
@@ -88,7 +102,7 @@ public class MyOpenGLActivity extends Activity {
          */
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
-            gl.glViewport(0, 0, width, height);
+            GLES20.glViewport(0, 0, width, height);
         }
 
         /**
@@ -98,7 +112,9 @@ public class MyOpenGLActivity extends Activity {
          */
         @Override
         public void onDrawFrame(GL10 gl) {
-            gl.glClear(GL_COLOR_BUFFER_BIT);
+            GLES20.glClear(GL_COLOR_BUFFER_BIT);
+            mTriangle.draw();
+
         }
     }
 
