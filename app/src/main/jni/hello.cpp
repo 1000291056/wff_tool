@@ -8,8 +8,10 @@
 #include "com_wff_androidtool_nativecode_NativeObject.h"
 #include "stdio.h"
 #include <android/log.h>
+#include "pthread.h"
 
 void printMsg(JNIEnv *env, jobject jobject, jstring str);
+
 /*
  * Class:     com_wff_wff_tool_nativecode_NativeObject
  * Method:    printMsg
@@ -132,13 +134,13 @@ JNIEXPORT void JNICALL Java_com_wff_androidtool_nativecode_NativeObject_printByt
     jstring msg = env->NewStringUTF(msgTemp);
     jboolean exce = env->ExceptionCheck();
 
-    jstring i_str = (env)->NewStringUTF(("exce="+std::to_string(exce)).data());
+    jstring i_str = (env)->NewStringUTF(("exce=" + std::to_string(exce)).data());
     printMsg(env, o, msg);
     printMsg(env, o, i_str);
     if (exce <= 0) {
 
     }
-__android_log_print(ANDROID_LOG_ERROR,"------","1111111111");
+    __android_log_print(ANDROID_LOG_ERROR, "------", "1111111111");
     env->DeleteLocalRef(msg);
     env->DeleteLocalRef(i_str);
     env->ReleaseByteArrayElements(jba, jb, 0);

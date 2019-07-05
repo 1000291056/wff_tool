@@ -4,7 +4,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
-    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.wff.androidtooll"
         minSdkVersion 15
@@ -14,8 +13,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
         multiDexEnabled true
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_STL=c++_shared"
+            }
+        }
         ndk {
-            abiFilters "armeabi-v7a", "x86"   //这里是编译的配置
+            abiFilters "x86"   //这里是编译的配置
         }
     }
     buildTypes {

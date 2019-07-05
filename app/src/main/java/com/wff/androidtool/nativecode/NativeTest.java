@@ -1,6 +1,10 @@
 package com.wff.androidtool.nativecode;
 
+import android.os.Looper;
 import android.util.Log;
+
+import com.orhanobut.logger.Logger;
+import com.wff.androidtool.opencv.OpencvStudy;
 
 import java.nio.charset.Charset;
 
@@ -24,5 +28,11 @@ public class NativeTest {
         o.printIntArrayElement(new int[]{3, 5, 7});
         o.printByteArrayElement("我是bt".getBytes(Charset.forName("utf-8")));
         o.printMsg("test jni - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - -  - - - - - -end");
+
+        OpencvStudy opencvStudy=new OpencvStudy();
+        opencvStudy.nativetest();
+    }
+    public static void callback(){
+        Logger.e("在主线程："+ (Looper.getMainLooper()==Looper.myLooper()));
     }
 }
