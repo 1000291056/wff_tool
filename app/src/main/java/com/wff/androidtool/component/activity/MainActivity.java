@@ -217,6 +217,9 @@ public class MainActivity extends BaseActivity {
         //Unregister the Orientation BroadcasReceiver to avoid a BroadcastReceiver leak
 //        this.unregisterReceiver(orientationBR);
         super.onPause();
+        if (nativeTest!=null){
+            nativeTest.exitTask();
+        }
     }
 
     @Override
@@ -239,9 +242,13 @@ public class MainActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "onStop____________________");
-        if (nativeTest!=null){
-            nativeTest.exitTask();
-        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     private void testApi() {

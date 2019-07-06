@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include "pthread.h"
 #include "semaphore.h"
+#include <unistd.h>
 //全局环境
 #define COUNT_MAX 50
 
@@ -83,6 +84,8 @@ void *product(void *param) {
         count++;
         __android_log_print(ANDROID_LOG_ERROR, "from_jni", "生产一个商品，剩余量%d", count);
         pthread_cond_signal(&c_cond);
+
+        sleep(1);
         //释放资源
         pthread_mutex_unlock(&mutex);
     }
@@ -100,6 +103,7 @@ void *consume(void *param) {
         count--;
         __android_log_print(ANDROID_LOG_ERROR, "from_jni", "消费一个商品,剩余量%d", count);
         pthread_cond_signal(&p_cond);
+        sleep(1);
         //释放资源
         pthread_mutex_unlock(&mutex);
     }
