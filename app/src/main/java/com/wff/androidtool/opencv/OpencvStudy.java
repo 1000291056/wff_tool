@@ -7,6 +7,7 @@ import com.orhanobut.logger.Logger;
 public class OpencvStudy {
     public native void studyOpencv(byte[]data);
     public native void nativetest();
+    public native void nativeExitTask();
     public static void callback(){
         Logger.e("在主线程："+ (Looper.getMainLooper()==Looper.myLooper()));
     }

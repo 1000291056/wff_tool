@@ -4,10 +4,10 @@
 
 #include "jni.h"
 #include "School.h"
-#include <string>
 #include "com_wff_androidtool_nativecode_NativeObject.h"
 #include "stdio.h"
 #include <android/log.h>
+#include <string>
 #include "pthread.h"
 
 void printMsg(JNIEnv *env, jobject jobject, jstring str);

@@ -9,12 +9,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wff.androidtool.R;
 import com.wff.androidtool.testapi.LruCacheT;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 
 public class ImageLoaderActivity extends Activity {
 
-    @BindView(R.id.img)
     ImageView img;
 
     @Override
@@ -23,7 +21,6 @@ public class ImageLoaderActivity extends Activity {
 
 
         setContentView(R.layout.activity_main2);
-        ButterKnife.bind(this);
         Bitmap bitmap=new LruCacheT(ImageLoaderActivity.this).get();
         img.setImageBitmap(bitmap);
         //ImageLoader.getInstance().displayImage("http://e.hiphotos.baidu.com/image/pic/item/241f95cad1c8a786f5d00e7a6a09c93d71cf50cf.jpg",img);

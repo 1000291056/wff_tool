@@ -4,10 +4,11 @@
 
 #ifndef WFF_TOOL_MYTHREAD_H
 #define WFF_TOOL_MYTHREAD_H
-#define COUNT_MAX 50;
+#define COUNT_MAX 50
 
-#include "../../../../../../../Tool/Ndk/android-ndk-r15c/android-ndk-r15c/sysroot/usr/include/sys/types.h"
-#include "../../../../../../../Tool/Ndk/android-ndk-r15c/android-ndk-r15c/sysroot/usr/include/pthread.h"
+
+#include <sys/types.h>
+#include <pthread.h>
 #include "android/log.h"
 namespace test {
     /**
@@ -35,6 +36,7 @@ namespace test {
  * @return
  */
         void *consume(void *param);
+        void startTask();
     };
 }
 

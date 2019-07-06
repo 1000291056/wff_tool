@@ -14,14 +14,16 @@ import java.nio.charset.Charset;
 
 public class NativeTest {
     private static final String TAG = NativeTest.class.getSimpleName();
+    private NativeObject o;
+    private OpencvStudy opencvStudy;
 
     public NativeTest() {
-        NativeObject o = new NativeObject();
+        o = new NativeObject();
         o.printMsg("test jni - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - -  - - - - - -start");
         int[] array = o.makeIntArray(4);
         int count = array.length;
         for (int i = 0; i < count; i++
-                ) {
+        ) {
             Log.i(TAG, "array" + String.valueOf(i) + ":" + array[i]);
         }
         int twoArray[][] = o.makeIntArray(4, 5);
@@ -29,10 +31,17 @@ public class NativeTest {
         o.printByteArrayElement("我是bt".getBytes(Charset.forName("utf-8")));
         o.printMsg("test jni - - - - - - - - - - - - - - - - - -  - - - - - - - - - - - - - -  - - - - - -end");
 
-        OpencvStudy opencvStudy=new OpencvStudy();
+        opencvStudy = new OpencvStudy();
         opencvStudy.nativetest();
     }
-    public static void callback(){
-        Logger.e("在主线程："+ (Looper.getMainLooper()==Looper.myLooper()));
+
+    public static void callback() {
+        Logger.e("在主线程：" + (Looper.getMainLooper() == Looper.myLooper()));
+    }
+
+    public void exitTask() {
+        if (opencvStudy != null) {
+            opencvStudy.nativeExitTask();
+        }
     }
 }

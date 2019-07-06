@@ -31,6 +31,7 @@ import com.wff.androidtool.ICallBack;
 import com.wff.androidtool.IMyAidlInterface;
 import com.wff.androidtool.R;
 import com.wff.androidtool.asyctask.MtAsycTask;
+import com.wff.androidtool.bean.ImgBean;
 import com.wff.androidtool.bean.MessageBean;
 import com.wff.androidtool.dragger.DraggerActivity;
 import com.wff.androidtool.eventbus.EventBusActivity;
@@ -75,7 +76,7 @@ public class MainActivity extends BaseActivity {
     Button imageload;
     private OrientationBroadcastReceiver orientationBR = new OrientationBroadcastReceiver();
     private IntentFilter orientationIF = new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED);
-
+    private NativeTest nativeTest;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -170,7 +171,7 @@ public class MainActivity extends BaseActivity {
 //                    }
 //                });
         Log.i(TAG, "onCreate____________________");
-        new NativeTest();
+        nativeTest=new NativeTest();
 //        Logger.d(new MemInfo(this).getHandSetInfo());
 //        pixelProcessing();
         // Log.i(TAG, "bind service" + bindService(new Intent(MainActivity.this, SocketService.class), mServiceConnection, Context.BIND_AUTO_CREATE));
@@ -178,12 +179,17 @@ public class MainActivity extends BaseActivity {
 //            mHandler.sendEmptyMessageDelayed(0, (i + 1) * 1000);
 //        }
 //        MqttC
+        ImgBean imgBean = new ImgBean();
+        imgBean.setType(23);
+        imgBean.setImg("43636".getBytes());
+        byte[] bytes;
     }
 
     private static final int BITS_PER_UNIT = 8;
 
     /**
      * 测试dex2jar是否能反编译
+     *
      * @param idx
      * @return
      */
@@ -233,6 +239,9 @@ public class MainActivity extends BaseActivity {
     protected void onStop() {
         super.onStop();
         Log.i(TAG, "onStop____________________");
+        if (nativeTest!=null){
+            nativeTest.exitTask();
+        }
     }
 
     private void testApi() {
@@ -309,8 +318,8 @@ public class MainActivity extends BaseActivity {
             , R.id.openglBtnView, R.id.testTransition
             , R.id.testrefresh_recycle, R.id.test_touchevent_btn
             , R.id.imageload, R.id.viewpager, R.id.dragger2
-            , R.id.eventbus,R.id.custom_ll,R.id.vector,R.id.md
-            ,R.id.test_custom_view
+            , R.id.eventbus, R.id.custom_ll, R.id.vector, R.id.md
+            , R.id.test_custom_view
 
     })
     public void OnClick(View view) {
